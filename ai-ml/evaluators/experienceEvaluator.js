@@ -1,3 +1,5 @@
+import { weights } from "../config/weights.config.js";
+
 const roundToTwo = (value) => Number(value.toFixed(2));
 
 const toNumber = (value) => {
@@ -53,7 +55,7 @@ export const extractExperienceInYears = (text = "") => {
 export const experienceEvaluator = ({
   candidateExperienceText = "",
   jobDescription = "",
-  weight = 0.2,
+  weight = weights.experience ?? 0.20,
 } = {}) => {
   const candidateExperience = extractExperienceInYears(candidateExperienceText);
   const requiredExperience = extractExperienceInYears(jobDescription);

@@ -46,6 +46,9 @@ SkillSphere AI aims to simplify the path from learning to hiring by giving users
 
 3. **Resume vs Job Description Matcher**  
    ML-assisted comparison between candidate profile and role requirements.
+   - **Semantic Resume vs Job Description Matching** — Embedding-based semantic similarity scoring using OpenAI embeddings
+   - Complements keyword overlap with contextual alignment detection
+   - Cosine similarity comparison for conceptually related phrases (e.g., "workflow orchestration" vs "pipeline automation")
 
 4. **AI Mock Interview System**  
    Interview practice with structured feedback for improvement.
@@ -147,8 +150,16 @@ Implemented:
 - Reusable `ai-ml/evaluators/experienceEvaluator.js` for resume vs job description experience matching
 - Experience extraction supports years and months (examples: `18 months`, `1 year 6 months`, `2+ years`)
 - Weighted experience scoring with explainable feedback (`score`, `weight`, `candidateExperience`, `requiredExperience`, `experienceGap`)
+- **Hybrid Matching Pipeline** — Combined keyword, experience, skill, and semantic evaluators with normalized weights summing to 1.0
+- Centralized weight configuration at `ai-ml/config/weights.config.js`
 - Unit tests for experience evaluator at `ai-ml/evaluators/__tests__/experienceEvaluator.test.js`
 - `/api/resume/analyze` now includes `experienceMatch` in response and MongoDB resume records
+- **Semantic Evaluator** (`ai-ml/evaluators/semanticEvaluator.js`) for resume vs job description semantic similarity
+  - Uses OpenAI `text-embedding-3-small` model for vector embeddings
+  - Cosine similarity scoring (0-100) with configurable weight (default 0.20)
+  - Tiered feedback: Strong (85+), Moderate (65+), Limited (40+), Low (<40) alignment
+  - Safe handling of missing inputs with descriptive feedback messages
+  - Unit tests at `ai-ml/evaluators/__tests__/semanticEvaluator.test.js`
 
 ### Authentication & Security Progress
 
@@ -246,6 +257,9 @@ EMAIL_PORT=2525
 EMAIL_USER=your_smtp_username
 EMAIL_PASS=your_smtp_password
 
+# AI/ML Configuration (Required for semantic matching)
+OPENAI_API_KEY=your_openai_api_key
+
 ## 🔐 Google OAuth Setup
 
 1. Go to Google Cloud Console
@@ -265,6 +279,7 @@ Server environment variables (create `server/.env` from `server/example.env`):
 - `PORT` (backend default: `5000`)
 - `JWT_SECRET` (required for JWT registration)
 - `JWT_EXPIRES_IN` (optional, default is `7d`)
+- `OPENAI_API_KEY` (required for semantic resume-to-job-description matching)
 
 Example local development values:
 
@@ -275,6 +290,7 @@ Example local development values:
 - `EMAIL_PORT=2525`
 - `EMAIL_USER=your_smtp_username`
 - `EMAIL_PASS=your_smtp_password`
+- `OPENAI_API_KEY=sk-...` (Required for semantic resume matching)
 
 ```
 

@@ -7,6 +7,7 @@ import {
   experienceMatchEvaluator,
   keywordMatchEvaluator,
   skillMatchEvaluator,
+  semanticMatchEvaluator,
 } from "./evaluatorAdapters.js";
 import { runPipeline } from "../../../../ai-ml/pipeline/runPipeline.js";
 
@@ -112,6 +113,17 @@ const toLegacyExperienceMatch = (pipelineResult) => {
   };
 };
 
+const toLegacySemanticMatch = (pipelineResult) => {
+  const result = pipelineResult.breakdown.semanticMatch;
+  if (!result) return {};
+
+  return {
+    score: result.score,
+    weight: result.weight,
+    feedback: result.summary ? [result.summary] : [],
+  };
+};
+
 export const uploadResume = asyncHandler(async (req, res, next) => {
   if (!req.file) {
     return next(new AppError("No file uploaded", 400));
@@ -159,6 +171,7 @@ export const analyzeResume = asyncHandler(async (req, res, next) => {
   }
   if (trimmedJobDescription && parsedData.resumeText) {
     evaluators.push(keywordMatchEvaluator);
+    evaluators.push(semanticMatchEvaluator);
   }
   evaluators.push(experienceMatchEvaluator);
 
@@ -177,6 +190,7 @@ export const analyzeResume = asyncHandler(async (req, res, next) => {
   const skillMatch = toLegacySkillMatch(pipelineResult);
   const keywordMatch = toLegacyKeywordMatch(pipelineResult);
   const experienceMatch = toLegacyExperienceMatch(pipelineResult);
+  const semanticMatch = toLegacySemanticMatch(pipelineResult);
 
   const fileData = {
     originalName: req.file.originalname,
@@ -195,6 +209,7 @@ export const analyzeResume = asyncHandler(async (req, res, next) => {
     skillMatch,
     keywordMatch,
     experienceMatch,
+    semanticMatch,
     evaluatorBreakdown: pipelineResult.evaluators,
     aggregatedScore: pipelineResult.score,
     file: fileData,
@@ -204,6 +219,7 @@ export const analyzeResume = asyncHandler(async (req, res, next) => {
   if (Object.keys(skillMatch).length > 0) successParts.push("skill match");
   if (Object.keys(keywordMatch).length > 0) successParts.push("keyword relevance");
   if (Object.keys(experienceMatch).length > 0) successParts.push("experience fit");
+  if (Object.keys(semanticMatch).length > 0) successParts.push("semantic alignment");
 
   const evalSummary =
     successParts.length > 0
@@ -218,6 +234,7 @@ export const analyzeResume = asyncHandler(async (req, res, next) => {
     skillMatch,
     keywordMatch,
     experienceMatch,
+    semanticMatch,
     file: fileData,
     evaluatorBreakdown: pipelineResult.evaluators,
     overallScore: pipelineResult.score,

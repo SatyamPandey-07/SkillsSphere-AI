@@ -1,3 +1,5 @@
+import { weights } from "../config/weights.config.js";
+
 const STOP_WORDS = new Set([
   "the",
   "and",
@@ -80,7 +82,7 @@ export const keywordEvaluator = ({ resumeText = "", jobDescription = "" }) => {
   if (jdKeywords.length === 0) {
     return {
       score: 0,
-      weight: 0.2,
+      weight: weights.keyword ?? 0.10,
       feedback: ["No extractable keywords found in the job description"],
       matchedKeywords: [],
       missingKeywords: [],
@@ -119,7 +121,7 @@ export const keywordEvaluator = ({ resumeText = "", jobDescription = "" }) => {
 
   return {
     score,
-    weight: 0.2,
+    weight: weights.keyword ?? 0.10,
     feedback,
     matchedKeywords,
     missingKeywords,
