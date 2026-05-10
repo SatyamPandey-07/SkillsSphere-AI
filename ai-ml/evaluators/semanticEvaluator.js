@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { weights } from "../config/weights.config.js";
+
 
 const cosineSimilarity = (a, b) => {
   if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length || a.length === 0) {
@@ -51,7 +51,7 @@ const generateEmbedding = async (text) => {
   return response.data[0].embedding;
 };
 
-const WEIGHT = weights.semantic ?? 0.20;
+
 const KEY = "semanticMatch";
 const LABEL = "Semantic Match";
 

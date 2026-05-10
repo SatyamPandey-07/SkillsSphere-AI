@@ -1,4 +1,4 @@
-import { weights } from "../config/weights.config.js";
+
 
 const roundToTwo = (value) => Number(value.toFixed(2));
 // --- Normalize text ---

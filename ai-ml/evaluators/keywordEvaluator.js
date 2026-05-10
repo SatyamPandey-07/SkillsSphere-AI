@@ -1,4 +1,4 @@
-import { weights } from "../config/weights.config.js";
+
 
 import techKeywords from "../config/keywords.js";
 import { normalizeSkill, normalizeSkillArray } from "../utils/skillNormalizer.js";

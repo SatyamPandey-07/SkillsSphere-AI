@@ -92,15 +92,15 @@ export const analyzeResume = async (req, res) => {
       jobDescription,
     });
 
-  const evaluators = [];
-  if (parsedData.skills?.length && jobSkills.length) {
-    evaluators.push(skillMatchEvaluator);
-  }
-  if (jobDescription && parsedData.resumeText) {
-    evaluators.push(keywordMatchEvaluator);
-    evaluators.push(semanticMatchEvaluator);
-  }
-  evaluators.push(experienceMatchEvaluator);
+    const evaluators = [];
+    if (parsedData.skills?.length && jobSkills.length) {
+      evaluators.push(skillMatchEvaluator);
+    }
+    if (jobDescription && parsedData.resumeText) {
+      evaluators.push(keywordMatchEvaluator);
+      evaluators.push(semanticMatchEvaluator);
+    }
+    evaluators.push(experienceMatchEvaluator);
     // 🔥 Normalize everything
     const safeData = normalizeResumeData(parsedData);
     const safePipeline = normalizePipelineResult(pipelineResult);
