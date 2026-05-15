@@ -7,6 +7,7 @@ This document reflects the current repository structure and progress implemented
 - `client/`: React frontend application
 - `server/`: Node.js + Express backend
 - `ai-ml/`: AI and ML evaluators and domain placeholders
+- `interview-ai-service/`: Python AI microservice (FastAPI)
 - `docs/`: Architecture, API, feature, and quality documents
 
 ## Current Implementation Progress
@@ -56,7 +57,19 @@ Scaffolded placeholders:
 
 - `classrooms/`
 - `job-matcher/`
-- `mock-interview/`
+
+#### Mock Interview Module (`mock-interview/`)
+
+Implemented:
+
+- `src/modules/mock-interview/pages/InterviewLobby.jsx` — Topic selection, difficulty, persona picker, camera preview
+- `src/modules/mock-interview/pages/InterviewSession.jsx` — Q&A flow with timer, progress bar, score feedback
+- `src/modules/mock-interview/pages/InterviewResults.jsx` — Score dashboard with ring chart, category breakdown, per-question accordion
+- `src/modules/mock-interview/pages/InterviewHistory.jsx` — Paginated history of past interviews
+- `src/modules/mock-interview/services/interviewService.js` — API service layer for all interview endpoints
+- `src/modules/mock-interview/components/CameraCheck.jsx` — Camera preview + mic level visualizer
+- `src/modules/mock-interview/components/PersonaSelector.jsx` — Interviewer persona selection
+- `src/modules/mock-interview/styles/mock-interview.css` — Glassmorphic styling for all interview pages
 
 ### Backend (`server`)
 
@@ -90,14 +103,35 @@ Implemented:
   - `src/modules/jobs/controller.js`
   - `src/modules/jobs/service.js`
   - `src/database/models/JobPosting.js`
+- Interview Engine:
+  - `src/database/models/InterviewSession.js` — Session model with answers, scores, and concepts
+  - `src/database/models/QuestionBank.js` — Pre-stored questions by topic/difficulty
+  - `src/database/models/ConceptGraph.js` — Topic concept trees
+  - `src/modules/interviews/routes.js` — Interview API routes
+  - `src/modules/interviews/controller.js` — Request handling
+  - `src/modules/interviews/service.js` — Business logic (question selection, scoring, history)
+  - `src/modules/interviews/seed/questions.json` — 46 seed questions across 3 topics
+  - `src/modules/interviews/seed/seedInterviewData.js` — Database seeding script
+  - `src/integrations/aiInterviewService.js` — HTTP client for Python AI microservice
 
 Scaffolded placeholders:
 
 - `modules/analytics/`
 - `modules/classrooms/`
-- `modules/interviews/`
 - `modules/matching/`
 - `modules/users/`
+
+### Python AI Microservice (`interview-ai-service/`)
+
+Implemented:
+
+- `main.py` — FastAPI application entry point
+- `routers/transcription.py` — Audio transcription endpoint
+- `routers/evaluation.py` — Answer evaluation endpoint
+- `services/whisper_service.py` — Speech-to-text using faster-whisper
+- `services/semantic_service.py` — Semantic similarity scoring (sentence-transformers)
+- `services/nlp_service.py` — Concept detection and communication analysis (spaCy)
+- `requirements.txt` — Python dependencies
 
 ### AI/ML (`ai-ml`)
 
@@ -135,6 +169,15 @@ Scaffolded placeholders:
 - `GET /api/jobs/:id`: get job details
 - `PATCH /api/jobs/:id`: update a job (Owner Recruiter only)
 - `DELETE /api/jobs/:id`: delete a job (Owner Recruiter only)
+
+- `GET /api/interviews/topics`: list available interview topics
+- `GET /api/interviews/ai-status`: check Python AI service health
+- `POST /api/interviews/start`: start a new interview session
+- `GET /api/interviews/:id`: get session details
+- `POST /api/interviews/:id/answer`: submit an answer for AI evaluation
+- `POST /api/interviews/:id/complete`: end interview and calculate scores
+- `GET /api/interviews/:id/results`: get detailed results breakdown
+- `GET /api/interviews/history`: paginated interview history
 
 ## Notes
 

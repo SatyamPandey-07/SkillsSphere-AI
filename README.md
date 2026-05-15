@@ -51,7 +51,15 @@ SkillSphere AI aims to simplify the path from learning to hiring by giving users
    - Cosine similarity comparison for conceptually related phrases (e.g., "workflow orchestration" vs "pipeline automation")
 
 4. **AI Mock Interview System**  
-   Interview practice with structured feedback for improvement.
+   Adaptive interview practice with real-time AI evaluation. (Route: `/mock-interview`)
+   - Topic selection (React, Node.js, DSA) with difficulty levels
+   - 5-question sessions with randomized, non-repeating questions
+   - AI-powered scoring: technical accuracy, communication quality, and concept relevance
+   - Live score feedback after each answer
+   - Results dashboard with overall score ring, per-question breakdown, and weak concepts
+   - Interview history with paginated session tracking
+   - Python AI microservice for NLP evaluation (spaCy + sentence-transformers)
+   - Fail-soft mode: falls back to mock scores when AI service is unavailable
 
 5. **Skill Tracking Dashboard**  
    Performance insights to help students and tutors track growth.
@@ -88,6 +96,7 @@ SkillSphere AI aims to simplify the path from learning to hiring by giving users
 - **Backend:** Node.js + Express.js
 - **Database:** MongoDB
 - **Intelligence Layer:** AI/ML for resume analysis, matching, and recommendations
+- **Interview AI Service:** Python + FastAPI + spaCy + sentence-transformers
 
 ---
 
@@ -126,6 +135,10 @@ SkillSphere-AI/
 ├── ai-ml/                           # AI/ML intelligence layer
 │   ├── evaluators/                  # Skill, Keyword, and Experience matchers
 │   └── pipeline/                    # Unified analysis pipeline
+├── interview-ai-service/            # Python AI microservice (FastAPI)
+│   ├── routers/                     # API route handlers
+│   ├── services/                    # Whisper STT, NLP, Semantic scoring
+│   └── requirements.txt             # Python dependencies
 ├── docs/                            # Project documentation
 └── ...                              # Configuration and root files
 ```
@@ -151,6 +164,15 @@ SkillSphere-AI/
 - `GET /api/jobs`: list all published jobs (supports `designation`, `minSalary`, `maxSalary`, `postedWithin` filters)
 - `GET /api/jobs/recruiter`: list jobs posted by the authenticated recruiter
 - `GET /api/jobs/:id`: get job details
+
+- `GET /api/interviews/topics`: list interview topics with question counts
+- `POST /api/interviews/start`: start a new interview session
+- `GET /api/interviews/:id`: get session details
+- `POST /api/interviews/:id/answer`: submit an answer for evaluation
+- `POST /api/interviews/:id/complete`: end interview and calculate scores
+- `GET /api/interviews/:id/results`: get detailed results
+- `GET /api/interviews/history`: paginated interview history
+- `GET /api/interviews/ai-status`: check Python AI service health
 
 ### Why this structure works
 
@@ -251,6 +273,11 @@ EVALUATOR_EXPERIENCE_MATCH_ENABLED=true
 EVALUATOR_SKILL_MATCH_WEIGHT=1
 EVALUATOR_KEYWORD_MATCH_WEIGHT=0.2
 EVALUATOR_EXPERIENCE_MATCH_WEIGHT=0.2
+
+# Interview AI Service (Python microservice for answer evaluation)
+INTERVIEW_AI_URL=http://localhost:8000
+INTERVIEW_AI_TIMEOUT=10000
+INTERVIEW_AI_TRANSCRIBE_TIMEOUT=30000
 
 ### Client
 
