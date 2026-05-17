@@ -23,6 +23,17 @@
   --shadow-soft: 0 18px 50px -28px rgba(15, 23, 42, 0.38);
   --hero-grid: rgba(79, 70, 229, 0.11);
 
+  /* Light mode gradient palette */
+  --grad-purple: #7C3AED;
+  --grad-green:  #059669;
+  --grad-purple-soft: rgba(124, 58, 237, 0.12);
+  --grad-green-soft:  rgba(5, 150, 105, 0.10);
+  --grad-hero: linear-gradient(135deg, rgba(124,58,237,0.08) 0%, rgba(79,70,229,0.06) 40%, rgba(5,150,105,0.07) 100%);
+  --grad-brand: linear-gradient(135deg, #7C3AED 0%, #4F46E5 50%, #059669 100%);
+  --grad-brand-soft: linear-gradient(135deg, rgba(124,58,237,0.15) 0%, rgba(79,70,229,0.10) 50%, rgba(5,150,105,0.12) 100%);
+  --grad-text: linear-gradient(135deg, #7C3AED 0%, #4F46E5 50%, #059669 100%);
+  --grad-border: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(5,150,105,0.3));
+
   --font-heading: 'Outfit', 'Inter', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
 
@@ -32,6 +43,128 @@
   --radius-xl: 1.5rem;
 
   --transition: all 0.3s ease;
+}
+
+/* ── Light mode gradient background ── */
+:root body,
+.light body {
+  background: linear-gradient(160deg, #f5f3ff 0%, #f7f9fc 40%, #ecfdf5 100%);
+  min-height: 100vh;
+}
+
+/* ── Ambient gradient orbs (light mode only) ── */
+body:not(.dark)::before {
+  content: '';
+  position: fixed;
+  top: -120px;
+  left: -120px;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124,58,237,0.13) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbFloat 18s ease-in-out infinite alternate;
+}
+
+body:not(.dark)::after {
+  content: '';
+  position: fixed;
+  bottom: -100px;
+  right: -100px;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(5,150,105,0.11) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbFloat 22s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes orbFloat {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(30px, 20px) scale(1.06); }
+  100% { transform: translate(-20px, 30px) scale(0.96); }
+}
+
+/* ── Gradient text utility ── */
+.text-gradient {
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Gradient card border (light mode) ── */
+body:not(.dark) .gradient-border {
+  position: relative;
+  border: none !important;
+}
+body:not(.dark) .gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: var(--grad-brand);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Gradient button (light mode) ── */
+body:not(.dark) .btn-gradient {
+  background: var(--grad-brand);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 20px rgba(124,58,237,0.25), 0 2px 8px rgba(5,150,105,0.15);
+  transition: box-shadow 0.25s ease, transform 0.2s ease;
+}
+body:not(.dark) .btn-gradient:hover {
+  box-shadow: 0 8px 32px rgba(124,58,237,0.35), 0 4px 16px rgba(5,150,105,0.2);
+  transform: translateY(-2px);
+}
+
+/* ── Section divider gradient ── */
+body:not(.dark) .section-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(124,58,237,0.4), rgba(5,150,105,0.4), transparent);
+  border: none;
+  margin: 0;
+}
+
+/* ── Gradient highlight for feature cards (light mode) ── */
+body:not(.dark) .feature-card-light {
+  background: linear-gradient(145deg, #ffffff 60%, rgba(124,58,237,0.04) 100%);
+  border: 1px solid rgba(124,58,237,0.12);
+  box-shadow: 0 4px 24px rgba(124,58,237,0.06), 0 1px 4px rgba(5,150,105,0.04);
+  transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+body:not(.dark) .feature-card-light:hover {
+  border-color: rgba(124,58,237,0.25);
+  box-shadow: 0 12px 40px rgba(124,58,237,0.12), 0 4px 16px rgba(5,150,105,0.08);
+  transform: translateY(-4px);
+}
+
+/* ── Gradient badge (light mode) ── */
+body:not(.dark) .badge-gradient {
+  background: var(--grad-brand-soft);
+  border: 1px solid rgba(124,58,237,0.2);
+  color: var(--grad-purple);
+}
+
+/* ── Scrollbar gradient (light mode) ── */
+body:not(.dark) ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7C3AED, #059669);
+  border-radius: 4px;
+}
+body:not(.dark) ::-webkit-scrollbar-track {
+  background: #f0f0f8;
+}
+body:not(.dark) ::-webkit-scrollbar {
+  width: 5px;
 }
 
 .dark {
@@ -51,4 +184,228 @@
   --nav-bg: rgba(11, 15, 25, 0.82);
   --shadow-soft: 0 22px 60px -28px rgba(0, 0, 0, 0.72);
   --hero-grid: rgba(129, 140, 248, 0.14);
+
+  /* Dark mode gradient palette */
+  --grad-purple: #A78BFA;
+  --grad-green:  #34D399;
+  --grad-purple-soft: rgba(167, 139, 250, 0.15);
+  --grad-green-soft:  rgba(52, 211, 153, 0.12);
+  --grad-brand: linear-gradient(135deg, #7C3AED 0%, #6366F1 50%, #059669 100%);
+  --grad-brand-soft: linear-gradient(135deg, rgba(167,139,250,0.18) 0%, rgba(99,102,241,0.12) 50%, rgba(52,211,153,0.15) 100%);
+  --grad-text: linear-gradient(135deg, #A78BFA 0%, #818CF8 50%, #34D399 100%);
+}
+
+/* ── Light mode: hero & feature gradient orbs ── */
+html:not(.dark) .hero-orb-purple,
+html:not(.dark) .feat-orb-1 {
+  opacity: 1 !important;
+}
+html:not(.dark) .hero-orb-green,
+html:not(.dark) .feat-orb-2 {
+  opacity: 1 !important;
+}
+
+/* Light mode: feature section background */
+html:not(.dark) section.py-28,
+html:not(.dark) section.py-16 {
+  background: linear-gradient(160deg, #faf5ff 0%, #ffffff 50%, #f0fdf4 100%) !important;
+}
+
+/* Light mode: feature card gradient border on hover */
+html:not(.dark) [class*="rounded-"][class*="border"]:hover {
+  border-color: rgba(124, 58, 237, 0.2) !important;
+  box-shadow: 0 8px 32px rgba(124,58,237,0.08), 0 2px 8px rgba(5,150,105,0.06) !important;
+}
+
+/* Light mode: hero badge gradient */
+html:not(.dark) .inline-flex.items-center.gap-2.rounded-full {
+  background: linear-gradient(135deg, rgba(124,58,237,0.08) 0%, rgba(5,150,105,0.06) 100%) !important;
+  border-color: rgba(124,58,237,0.2) !important;
+}
+
+/* Light mode: skill progress bars get purple→green gradient */
+html:not(.dark) .bg-gradient-to-r.from-\[var\(--primary\)\].to-\[var\(--secondary\)\] {
+  background: linear-gradient(90deg, #7C3AED, #4F46E5, #059669) !important;
+}
+
+/* Light mode: page background */
+html:not(.dark) body {
+  background: linear-gradient(160deg, #f5f3ff 0%, #f7f9fc 45%, #ecfdf5 100%) !important;
+}
+
+/* Light mode: nav gradient border bottom */
+html:not(.dark) nav {
+  border-bottom-color: rgba(124,58,237,0.12) !important;
+}
+
+/* Light mode: primary button gradient */
+html:not(.dark) a[class*="bg-\[var\(--primary\)\]"],
+html:not(.dark) button[class*="bg-\[var\(--primary\)\]"] {
+  background: linear-gradient(135deg, #7C3AED 0%, #4F46E5 50%, #059669 100%) !important;
+  box-shadow: 0 4px 20px rgba(124,58,237,0.28), 0 2px 8px rgba(5,150,105,0.15) !important;
+}
+
+/* ══════════════════════════════════════════════
+   DARK MODE GRADIENT EFFECTS
+   Purple (#A78BFA / #7C3AED) + Green (#34D399)
+   ══════════════════════════════════════════════ */
+
+/* Dark mode: page background */
+html.dark body {
+  background: linear-gradient(160deg, #0d0b1a 0%, #0B0F19 45%, #071a12 100%) !important;
+  min-height: 100vh;
+}
+
+/* Dark mode: ambient orbs */
+html.dark body::before {
+  content: '';
+  position: fixed;
+  top: -140px;
+  left: -140px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124,58,237,0.22) 0%, rgba(99,102,241,0.10) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(70px);
+  animation: orbFloat 20s ease-in-out infinite alternate;
+}
+
+html.dark body::after {
+  content: '';
+  position: fixed;
+  bottom: -120px;
+  right: -120px;
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(5,150,105,0.18) 0%, rgba(52,211,153,0.08) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(70px);
+  animation: orbFloat 25s ease-in-out infinite alternate-reverse;
+}
+
+/* Dark mode: hero orbs */
+html.dark .hero-orb-purple {
+  opacity: 1 !important;
+  background: radial-gradient(circle, rgba(124,58,237,0.28) 0%, rgba(99,102,241,0.12) 40%, transparent 70%) !important;
+}
+html.dark .hero-orb-green {
+  opacity: 1 !important;
+  background: radial-gradient(circle, rgba(5,150,105,0.22) 0%, rgba(52,211,153,0.08) 40%, transparent 70%) !important;
+}
+
+/* Dark mode: feature section orbs */
+html.dark .feat-orb-1 {
+  opacity: 1 !important;
+  background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%) !important;
+}
+html.dark .feat-orb-2 {
+  opacity: 1 !important;
+  background: radial-gradient(circle, rgba(5,150,105,0.15) 0%, transparent 70%) !important;
+}
+
+/* Dark mode: feature section background */
+html.dark section.py-28,
+html.dark section.py-16 {
+  background: linear-gradient(160deg, #0f0b1f 0%, #131B2C 50%, #071a12 100%) !important;
+}
+
+/* Dark mode: skill progress bars */
+html.dark .bg-gradient-to-r.from-\[var\(--primary\)\].to-\[var\(--secondary\)\] {
+  background: linear-gradient(90deg, #7C3AED, #6366F1, #059669) !important;
+}
+
+/* Dark mode: card hover glow */
+html.dark [class*="rounded-"][class*="border"]:hover {
+  border-color: rgba(167,139,250,0.25) !important;
+  box-shadow: 0 8px 32px rgba(124,58,237,0.15), 0 2px 8px rgba(52,211,153,0.08) !important;
+}
+
+/* Dark mode: primary button gradient */
+html.dark a[class*="bg-\[var\(--primary\)\]"],
+html.dark button[class*="bg-\[var\(--primary\)\]"] {
+  background: linear-gradient(135deg, #7C3AED 0%, #6366F1 50%, #059669 100%) !important;
+  box-shadow: 0 4px 24px rgba(124,58,237,0.35), 0 2px 10px rgba(52,211,153,0.18) !important;
+}
+
+/* Dark mode: nav gradient border */
+html.dark nav {
+  border-bottom-color: rgba(167,139,250,0.12) !important;
+}
+
+/* Dark mode: scrollbar */
+html.dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7C3AED, #059669);
+  border-radius: 4px;
+}
+html.dark ::-webkit-scrollbar-track {
+  background: #0d1120;
+}
+html.dark ::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Dark mode: surface cards subtle gradient tint */
+html.dark .bg-\[var\(--surface\)\] {
+  background: linear-gradient(145deg, #131B2C 80%, rgba(124,58,237,0.04) 100%) !important;
+}
+
+/* ── Profile page animations ── */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* Profile hero banner gradient animation */
+.profile-banner {
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease infinite;
+}
+
+/* ── CTA bubble float animation ── */
+@keyframes ctaBubbleFloat {
+  0%   { transform: translateY(0px)   scale(1)    rotate(0deg); }
+  33%  { transform: translateY(-18px) scale(1.06) rotate(4deg); }
+  66%  { transform: translateY(-8px)  scale(0.96) rotate(-3deg); }
+  100% { transform: translateY(-24px) scale(1.03) rotate(2deg); }
+}
+
+/* ── CTA box slow gradient shift ── */
+@keyframes ctaBoxShift {
+  0%   { background-position: 0%   50%; }
+  25%  { background-position: 50%  0%;  }
+  50%  { background-position: 100% 50%; }
+  75%  { background-position: 50%  100%; }
+  100% { background-position: 0%   50%; }
+}
+
+/* ── Profile page glassy bubble animations ── */
+@keyframes profileBubble1 {
+  0%   { transform: translate(0px, 0px)   scale(1)    rotate(0deg);   filter: hue-rotate(0deg); }
+  33%  { transform: translate(40px, -30px) scale(1.08) rotate(8deg);   filter: hue-rotate(30deg); }
+  66%  { transform: translate(-20px, 20px) scale(0.94) rotate(-5deg);  filter: hue-rotate(60deg); }
+  100% { transform: translate(25px, -45px) scale(1.04) rotate(4deg);   filter: hue-rotate(90deg); }
+}
+
+@keyframes profileBubble2 {
+  0%   { transform: translate(0px, 0px)    scale(1)    rotate(0deg);   filter: hue-rotate(0deg); }
+  33%  { transform: translate(-35px, 25px) scale(1.10) rotate(-6deg);  filter: hue-rotate(40deg); }
+  66%  { transform: translate(20px, -30px) scale(0.92) rotate(7deg);   filter: hue-rotate(80deg); }
+  100% { transform: translate(-15px, 40px) scale(1.06) rotate(-3deg);  filter: hue-rotate(120deg); }
+}
+
+@keyframes profileBubble3 {
+  0%   { transform: translate(0px, 0px)    scale(1)    rotate(0deg);   filter: hue-rotate(0deg); }
+  33%  { transform: translate(20px, 35px)  scale(1.12) rotate(10deg);  filter: hue-rotate(50deg); }
+  66%  { transform: translate(-30px, -20px) scale(0.90) rotate(-8deg); filter: hue-rotate(100deg); }
+  100% { transform: translate(15px, 28px)  scale(1.05) rotate(5deg);   filter: hue-rotate(150deg); }
 }
